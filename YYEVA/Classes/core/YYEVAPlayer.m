@@ -177,7 +177,18 @@
    self.videoRender.fillMode = self.mode;
    self.videoRender.disalbleMetalCache = self.disalbleMetalCache;
    self.mtkView.delegate = self.videoRender;
-   self.mtkView.frame = self.bounds;
+    CGSize videoSize = assets.rgbSize;
+    CGSize targetSize;
+    if (videoSize.width > 0) {
+        targetSize = CGSizeMake(self.bounds.size.width,
+                                videoSize.height / videoSize.width * self.bounds.size.width);
+    } else {
+        targetSize = self.bounds.size;
+    }
+    self.mtkView.frame = CGRectMake(0,
+                                    self.bounds.size.height - targetSize.height,
+                                    targetSize.width,
+                                    targetSize.height);
    self.mtkView.backgroundColor = [UIColor clearColor];
    self.mtkView.preferredFramesPerSecond = assets.preferredFramesPerSecond ;
    self.mtkView.paused = YES;
